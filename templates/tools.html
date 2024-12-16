@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Tools</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        async function calculate() {
+            let expression = document.getElementById('expression').value;
+            let response = await fetch('/calculate', {
+                method: 'POST',
+                body: new URLSearchParams({'expression': expression}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+            let result = await response.json();
+            document.getElementById('calc-result').innerText = "Result: " + result.result;
+        }
+
+        async function summarize() {
+            let text = document.getElementById('text').value;
+            let response = await fetch('/summarize', {
+                method: 'POST',
+                body: new URLSearchParams({'text': text}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+            let result = await response.json();
+            document.getElementById('summary-result').innerText = "Summary: " + result.summary;
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Educational Tools</h1>
+
+        <!-- Calculator -->
+        <div class="mb-5">
+            <h2>Calculator</h2>
+            <div class="input-group mb-3">
+                <input type="text" id="expression" class="form-control" placeholder="Enter math expression">
+                <button class="btn btn-primary" onclick="calculate()">Calculate</button>
+            </div>
+            <p id="calc-result" class="text-success"></p>
+        </div>
+
+        <!-- Text Summarizer -->
+        <div class="mb-5">
+            <h2>Text Summarizer</h2>
+            <textarea id="text" rows="5" class="form-control mb-3" placeholder="Enter text to summarize"></textarea>
+            <button class="btn btn-primary" onclick="summarize()">Summarize</button>
+            <p id="summary-result" class="text-success mt-3"></p>
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
